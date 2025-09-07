@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('memos.index');
 })->name('home');
 
 Route::view('dashboard', 'dashboard')
@@ -19,7 +19,10 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 
     // メモ関連のルート
+    Volt::route('memos', 'memos.index')->name('memos.index');
+    Volt::route('memos/create', 'memos.create')->name('memos.create');
     Volt::route('memos/{memo}', 'memos.show')->name('memos.show');
+    Volt::route('memos/{memo}/edit', 'memos.edit')->name('memos.edit');
 });
 
 require __DIR__ . '/auth.php';
