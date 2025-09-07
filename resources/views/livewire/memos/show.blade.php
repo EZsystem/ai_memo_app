@@ -1,9 +1,14 @@
 <?php
 
-use function Livewire\Volt\{state, mount};
+use function Livewire\Volt\{state, mount, action};
 use App\Models\Memo;
 
 state(['memo' => null]);
+
+$delete = action(function () {
+    $this->memo->delete();
+    return redirect()->route('memos.index')->with('success', 'メモを削除しました。');
+});
 
 mount(function (Memo $memo) {
     $this->memo = $memo;
@@ -27,8 +32,25 @@ mount(function (Memo $memo) {
                     </div>
                 </div>
 
-                <div class="prose max-w-none">
+                <div class="prose max-w-none mb-6">
                     {!! nl2br(e($memo->body)) !!}
+                </div>
+
+                <div class="flex justify-between items-center mt-8">
+                    <a href="{{ route('memos.index') }}"
+                        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                        戻る
+                    </a>
+                    <div class="space-x-4">
+                        <a href="{{ route('memos.edit', $memo) }}"
+                            class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+                            編集
+                        </a>
+                        <button wire:click="delete" wire:confirm="本当にこのメモを削除しますか？"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            削除
+                        </button>
+                    </div>
                 </div>
 
 
